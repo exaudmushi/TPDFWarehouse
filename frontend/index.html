@@ -1,0 +1,40 @@
+<!doctype html>
+<!--
+Template Name: NobleUI - React Admin Dashboard Template
+Author: NobleUI
+Website: https://nobleui.com
+Contact: nobleui.team@gmail.com
+Purchase: https://1.envato.market/nobleui_react
+License: You must have a valid Envato license to legally use this template for your project.
+-->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NobleUI - React Bootstrap Admin Template</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <!-- End Google font -->
+
+  </head>
+  <body>
+    
+    <!-- START: Setting up theme mode on page load for the splash screen -->
+    <script>
+      const themeMode = localStorage.getItem('theme');
+      if (themeMode) {
+        document.documentElement.setAttribute('data-bs-theme', themeMode);
+      } else {
+        document.documentElement.setAttribute('data-bs-theme', window.matchMedia('(prefers-color-scheme: dark)').matches? 'dark': 'light');
+      }
+    </script>
+    <!-- END: Setting up theme mode on page load for the splash screen -->
+     
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
