@@ -1,0 +1,41 @@
+[tool.poetry]
+name = "warehouse"
+version = "0.1.0"
+description = "Django backend for warehouse management with Celery, Redis, PostgreSQL, and ML integration"
+authors = ["Exaud <your.email@example.com>"]
+readme = "README.md"
+packages = [{ include = "warehouse" }]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+asgiref = "3.9.1"
+certifi = "2025.8.3"
+charset-normalizer = "3.4.2"
+Django = "5.1"
+django-cors-headers = "4.7.0"
+django-environ = "0.11.2"
+djangorestframework = "3.16.0"
+djangorestframework-simplejwt = "5.5.1"
+idna = "3.10"
+pillow = "11.3.0"
+psycopg2-binary = "2.9.10"
+py4j = "0.10.9.9"
+PyJWT = "2.10.1"
+pyodbc = "5.2.0"
+python-decouple = "3.8"
+requests = "2.32.4"
+sqlparse = "0.5.3"
+tzdata = "2025.2"
+urllib3 = "2.5.0"
+gunicorn = ">=20.1.0"
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.3.0"
+isort = "^5.12.0"
+pytest = "^8.1.1"
+pytest-django = "^4.5.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
