@@ -1,41 +1,27 @@
-version: '3.8'
 
 services:
   backend:
     build:
-      context: ./backend
+      context: .
       dockerfile: Dockerfile
     container_name: warehouse_app
-    ports:
-      - "8000:8000"
-    volumes:
-      - .:/app
-      - static_volume:/app/staticfiles
-    depends_on:
-      - db
-      - redis
-    env_file:
-      - .env
     command: >
       sh -c "
         python manage.py migrate &&
-        python manage.py runserver 0.0.0.0:8000
+        python manage.py collectstatic --noinput &&
+        gunicorn warehouse.wsgi:application --bind 0.0.0.0:8000
       "
-
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    container_name: react_app
-    ports:
-      - "3000:3000"
     volumes:
-      - ./frontend:/app
-    depends_on:
-      - backend
+      - ./backend:/app
+      - static_volume:/app/staticfiles
+    ports:
+      - "8000:8000"
     env_file:
       - .env
-    command: npm start
+    depends_on:
+      - db
+      - redis
+    restart: always
 
   celery_worker:
     build:
@@ -43,11 +29,14 @@ services:
       dockerfile: Dockerfile
     container_name: celery_worker
     command: celery -A warehouse worker --loglevel=info
+    volumes:
+      - ./backend:/app
+    env_file:
+      - .env
     depends_on:
       - backend
       - redis
-    env_file:
-      - .env
+    restart: always
 
   celery_beat:
     build:
@@ -55,29 +44,53 @@ services:
       dockerfile: Dockerfile
     container_name: celery_beat
     command: celery -A warehouse beat --loglevel=info
+    volumes:
+      - ./backend:/app
+    env_file:
+      - .env
     depends_on:
       - backend
       - redis
+    restart: always
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: react_app
+    command: >
+      sh -c "
+       npm i && npm run dev
+       " 
+    volumes:
+      - ./frontend:/app
+    ports:
+      - "3000:3000"
     env_file:
       - .env
+    depends_on:
+      - backend
+    restart: always
 
   redis:
     image: redis:7
     container_name: redis
     ports:
       - "6379:6379"
+    restart: always
 
   db:
     image: postgres:15
     container_name: postgres_db
-    ports:
-      - "5432:5432"
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
       POSTGRES_DB: app_db
     volumes:
       - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: always
 
 volumes:
   pgdata:

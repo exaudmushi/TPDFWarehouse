@@ -1,16 +1,10 @@
-# Base image
-FROM node:18
+FROM node:20-alpine
 
-# Set working directory
 WORKDIR /app
 
-# Install dependencies
 COPY package.json package-lock.json ./
-RUN npm install
+RUN npm ci
 
-# Copy source code
 COPY . .
 
-# Expose port and start
-EXPOSE 3000
-CMD ["npm", "start"]
+CMD ["npm", "run", "dev"]

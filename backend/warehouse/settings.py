@@ -151,14 +151,25 @@ REST_FRAMEWORK = {
 }
 
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': config('DB_NAME', default='warehouse'),  # Database name
+#         'USER': config('DB_USER', default='postgres'),     # Database user
+#         'PASSWORD': config('DB_PASSWORD', default=''),  # Database password
+#         'HOST': config('DB_HOST', default='localhost'),    # Database host
+#         'PORT': config('DB_PORT', default='5432'),        # Database port
+#     }
+# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DB_NAME', default='warehouse'),  # Database name
-        'USER': config('DB_USER', default='postgres'),     # Database user
-        'PASSWORD': config('DB_PASSWORD', default=''),  # Database password
-        'HOST': config('DB_HOST', default='localhost'),    # Database host
-        'PORT': config('DB_PORT', default='5432'),        # Database port
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),  # should be 'db'
+        'PORT': os.getenv('DB_PORT', '5432'),
     }
 }
 
